@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mosaic Agent - Interface Codage IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ai-primary': '#4f46e5',
+                        'ai-secondary': '#7c3aed',
+                        'ai-accent': '#06b6d4'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-ai-primary to-ai-secondary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-robot text-3xl"></i>
+                    <div>
+                        <h1 class="text-3xl font-bold">Mosaic Agent</h1>
+                        <p class="text-blue-100">Interface Centralisée pour IA de Codage</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#dashboard" class="hover:text-blue-200 transition-colors"><i class="fas fa-tachometer-alt mr-2"></i>Tableau de Bord</a>
+                    <a href="#tools" class="hover:text-blue-200 transition-colors"><i class="fas fa-tools mr-2"></i>Applications</a>
+                    <a href="#config" class="hover:text-blue-200 transition-colors"><i class="fas fa-cog mr-2"></i>Configuration</a>
+                    <a href="#docs" class="hover:text-blue-200 transition-colors"><i class="fas fa-book mr-2"></i>Documentation</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Compatibility Banner -->
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+        <div class="container mx-auto">
+            <div class="flex items-center">
+                <i class="fas fa-exclamation-triangle text-yellow-400 mr-3"></i>
+                <div>
+                    <p class="text-sm text-yellow-700">
+                        <strong>Compatibilité MacBook Pro 2015:</strong> 
+                        Certains outils nécessitent le cloud pour des performances optimales. 
+                        Consultez les notes de compatibilité ci-dessous.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="mb-12">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-chart-pie text-ai-primary mr-3"></i>
+                    Tableau de Bord IA
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-green-600 text-sm font-medium">Outils Actifs</p>
+                                <p class="text-2xl font-bold text-green-800" id="active-tools">0</p>
+                            </div>
+                            <i class="fas fa-play-circle text-green-500 text-2xl"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-600 text-sm font-medium">Compatible Local</p>
+                                <p class="text-2xl font-bold text-blue-800" id="local-compatible">6</p>
+                            </div>
+                            <i class="fas fa-laptop text-blue-500 text-2xl"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-orange-600 text-sm font-medium">Cloud Recommandé</p>
+                                <p class="text-2xl font-bold text-orange-800" id="cloud-recommended">3</p>
+                            </div>
+                            <i class="fas fa-cloud text-orange-500 text-2xl"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-purple-600 text-sm font-medium">Total Outils</p>
+                                <p class="text-2xl font-bold text-purple-800" id="total-tools">9</p>
+                            </div>
+                            <i class="fas fa-cubes text-purple-500 text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Tools Section -->
+        <section id="tools" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 flex items-center">
+                <i class="fas fa-microchip text-ai-primary mr-3"></i>
+                Applications de Codage IA Open Source
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="tools-grid">
+                <!-- Tools will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <!-- Configuration Section -->
+        <section id="config" class="mb-12">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-sliders-h text-ai-primary mr-3"></i>
+                    Configuration Système
+                </h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-700">Paramètres MacBook Pro 2015</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li><strong>OS:</strong> macOS 12.7.6</li>
+                                <li><strong>RAM:</strong> 8 Go</li>
+                                <li><strong>CPU:</strong> Intel (sans GPU dédié)</li>
+                                <li><strong>Recommandations:</strong> Modèles quantifiés (GGUF, int4/int8)</li>
+                                <li><strong>Taille modèle optimal:</strong> 2-4B paramètres</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-700">Ports et Services</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li><strong>Ollama API:</strong> http://localhost:11434</li>
+                                <li><strong>Flask Backend:</strong> http://localhost:5000</li>
+                                <li><strong>Jupyter Lab:</strong> http://localhost:8888</li>
+                                <li><strong>ChromaDB:</strong> http://localhost:8000</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section id="docs" class="mb-12">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-book-open text-ai-primary mr-3"></i>
+                    Instructions de Déploiement
+                </h2>
+                
+                <div class="prose max-w-none">
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+                        <h3 class="text-lg font-semibold text-blue-800 mb-2">Installation Rapide</h3>
+                        <pre class="bg-blue-100 p-3 rounded text-sm overflow-x-auto"><code># 1. Cloner le repository
+git clone https://github.com/avantgardepreparations-ops/mosaic-agent.git
+cd mosaic-agent
+
+# 2. Installer les dépendances Python
+pip install -r requirements.txt
+
+# 3. Lancer le serveur backend
+python app.py
+
+# 4. Ouvrir index.html dans votre navigateur</code></pre>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Prérequis Système</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-600">
+                                <li>Python 3.8+</li>
+                                <li>Docker (optionnel)</li>
+                                <li>Homebrew (macOS)</li>
+                                <li>8 Go RAM minimum</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Installation Outils IA</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-600">
+                                <li>Ollama: <code>brew install ollama</code></li>
+                                <li>Whisper: <code>pip install openai-whisper</code></li>
+                                <li>ChromaDB: <code>pip install chromadb</code></li>
+                                <li>LangChain: <code>pip install langchain</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-300">
+                <i class="fas fa-code mr-2"></i>
+                Mosaic Agent - Interface de Codage IA Centralisée
+            </p>
+            <p class="text-gray-400 text-sm mt-2">
+                Open Source • Compatible macOS • Local First
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

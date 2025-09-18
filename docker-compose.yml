@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  mosaic-agent:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - FLASK_ENV=production
+      - OLLAMA_URL=http://ollama:11434
+      - CHROMADB_URL=http://chromadb:8000
+    depends_on:
+      - ollama
+      - chromadb
+    networks:
+      - mosaic-network
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    networks:
+      - mosaic-network
+    # For Apple Silicon Macs, use:
+    # platform: linux/arm64
+    # For Intel Macs, use:
+    platform: linux/amd64
+
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - chromadb_data:/chroma/chroma
+    environment:
+      - CHROMA_DB_IMPL=clickhouse
+    networks:
+      - mosaic-network
+
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    networks:
+      - mosaic-network
+
+volumes:
+  ollama_models:
+  chromadb_data:
+
+networks:
+  mosaic-network:
+    driver: bridge

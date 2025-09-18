@@ -1,0 +1,26 @@
+{
+  "name": "multi-agent-liaison",
+  "version": "1.0.0",
+  "description": "Application de liaison multi agent - STRICTEMENT SEPAREE DE MOSAICMIND",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "validate": "node validate-separation.js",
+    "test": "node test-separation.js"
+  },
+  "keywords": [
+    "multi-agent",
+    "liaison",
+    "separated",
+    "not-mosaicmind"
+  ],
+  "author": "Multi-Agent Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "config": {
+    "separation_enforced": true,
+    "mosaicmind_blocked": true
+  }
+}

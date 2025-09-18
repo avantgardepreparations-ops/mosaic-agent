@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mosaic Agent - Interface Codage IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ai-blue': '#4F46E5',
+                        'ai-purple': '#7C3AED',
+                        'ai-green': '#059669',
+                        'ai-orange': '#EA580C',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-ai-blue to-ai-purple text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-brain text-2xl"></i>
+                    <h1 class="text-2xl font-bold">Mosaic Agent</h1>
+                    <span class="text-sm bg-white/20 px-2 py-1 rounded">v1.0.0</span>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#dashboard" class="hover:text-blue-200 transition-colors">Tableau de bord</a>
+                    <a href="#tools" class="hover:text-blue-200 transition-colors">Outils IA</a>
+                    <a href="#config" class="hover:text-blue-200 transition-colors">Configuration</a>
+                    <a href="#docs" class="hover:text-blue-200 transition-colors">Documentation</a>
+                </nav>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm">MacBook Pro 2015</span>
+                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- System Status Bar -->
+    <div class="bg-gray-800 text-white">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex justify-between items-center text-sm">
+                <div class="flex space-x-4">
+                    <span><i class="fas fa-memory text-blue-400"></i> RAM: 8GB</span>
+                    <span><i class="fas fa-microchip text-green-400"></i> CPU: Intel Core i5</span>
+                    <span><i class="fas fa-display text-orange-400"></i> GPU: Intel Iris Pro</span>
+                </div>
+                <div class="flex space-x-4">
+                    <span id="system-status">Système: Actif</span>
+                    <span id="ai-services">Services IA: <span id="active-services">0</span>/9</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-bold text-gray-800">Tableau de bord IA</h2>
+                <button id="refresh-all" class="bg-ai-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-sync-alt mr-2"></i>Actualiser tout
+                </button>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-green-500">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-gray-600 text-sm">Outils actifs</p>
+                            <p class="text-2xl font-bold text-green-600" id="active-tools">0</p>
+                        </div>
+                        <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-blue-500">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-gray-600 text-sm">Modèles chargés</p>
+                            <p class="text-2xl font-bold text-blue-600" id="loaded-models">0</p>
+                        </div>
+                        <i class="fas fa-brain text-blue-500 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-orange-500">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-gray-600 text-sm">Usage RAM</p>
+                            <p class="text-2xl font-bold text-orange-600" id="ram-usage">2.1GB</p>
+                        </div>
+                        <i class="fas fa-memory text-orange-500 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-md border-l-4 border-purple-500">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-gray-600 text-sm">CPU Usage</p>
+                            <p class="text-2xl font-bold text-purple-600" id="cpu-usage">15%</p>
+                        </div>
+                        <i class="fas fa-microchip text-purple-500 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Tools Section -->
+        <section id="tools" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Applications de codage IA open source</h2>
+            
+            <!-- Compatibility Warning -->
+            <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-6">
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-exclamation-triangle text-yellow-600 mt-1"></i>
+                    <div>
+                        <h4 class="font-semibold text-yellow-800">Compatibilité MacBook Pro 2015</h4>
+                        <p class="text-yellow-700 text-sm mt-1">
+                            Votre machine (8GB RAM, Intel CPU, pas de GPU dédié) peut exécuter la plupart des outils, 
+                            mais certains nécessiteront des modèles optimisés (quantifiés) ou le cloud pour de meilleures performances.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Ollama -->
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-robot text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">Ollama</h3>
+                                    <p class="text-sm text-gray-500">Serveur LLM local</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">✅ Compatible</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Exécute des modèles LLM (LLaMA, Mistral, CodeLlama) localement avec optimisation CPU/GPU. 
+                            Idéal pour votre Mac avec des modèles quantifiés.
+                        </p>
+                        
+                        <div class="bg-gray-50 p-3 rounded mb-4">
+                            <h5 class="font-medium text-sm mb-2">Configuration recommandée:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Modèles 2-7B paramètres</li>
+                                <li>• Format GGUF quantifié (Q4_0, Q4_1)</li>
+                                <li>• API locale: http://localhost:11434</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition-colors text-sm flex-1">
+                                <i class="fas fa-play mr-1"></i>Démarrer
+                            </button>
+                            <a href="https://ollama.ai" target="_blank" class="bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="mt-3 text-xs text-gray-500">
+                            <strong>Installation:</strong> curl -fsSL https://ollama.ai/install.sh | sh
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Whisper.cpp -->
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-microphone text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">Whisper.cpp</h3>
+                                    <p class="text-sm text-gray-500">Speech-to-Text</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">✅ Optimal</span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Transcription audio locale ultra-rapide. Optimisé pour CPU, parfait pour votre MacBook. 
+                            Supporte 99+ langues avec haute précision.
+                        </p>
+                        
+                        <div class="bg-gray-50 p-3 rounded mb-4">
+                            <h5 class="font-medium text-sm mb-2">Performances sur votre Mac:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Modèle base: ~2x temps réel</li>
+                                <li>• Modèle small: ~1.5x temps réel</li>
+                                <li>• Formats: WAV, MP3, M4A</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-600 transition-colors text-sm flex-1">
+                                <i class="fas fa-play mr-1"></i>Démarrer
+                            </button>
+                            <a href="https://github.com/ggerganov/whisper.cpp" target="_blank" class="bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="mt-3 text-xs text-gray-500">
+                            <strong>Installation:</strong> git clone + make
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ChromaDB / FAISS -->
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-database text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">ChromaDB</h3>
+                                    <p class="text-sm text-gray-500">Base vectorielle</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">✅ Compatible</span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Base de données vectorielle pour stocker et rechercher des embeddings. 
+                            Mémoire à long terme pour vos agents IA.
+                        </p>
+                        
+                        <div class="bg-gray-50 p-3 rounded mb-4">
+                            <h5 class="font-medium text-sm mb-2">Capacités locales:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Millions de vecteurs en mémoire</li>
+                                <li>• Recherche similitude < 100ms</li>
+                                <li>• API HTTP intégrée</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="bg-purple-500 text-white px-3 py-2 rounded hover:bg-purple-600 transition-colors text-sm flex-1">
+                                <i class="fas fa-play mr-1"></i>Démarrer
+                            </button>
+                            <a href="https://www.trychroma.com" target="_blank" class="bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="mt-3 text-xs text-gray-500">
+                            <strong>Installation:</strong> pip install chromadb
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LangChain -->
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-link text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">LangChain</h3>
+                                    <p class="text-sm text-gray-500">Framework d'agents</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">✅ Compatible</span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Framework pour créer des agents IA complexes avec chaînage de prompts, 
+                            mémoire et outils externes.
+                        </p>
+                        
+                        <div class="bg-gray-50 p-3 rounded mb-4">
+                            <h5 class="font-medium text-sm mb-2">Fonctionnalités clés:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Chaînes de prompts avancées</li>
+                                <li>• Agents avec outils</li>
+                                <li>• Mémoire conversationnelle</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="bg-orange-500 text-white px-3 py-2 rounded hover:bg-orange-600 transition-colors text-sm flex-1">
+                                <i class="fas fa-play mr-1"></i>Configurer
+                            </button>
+                            <a href="https://python.langchain.com" target="_blank" class="bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="mt-3 text-xs text-gray-500">
+                            <strong>Installation:</strong> pip install langchain
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LM Studio -->
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-desktop text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">LM Studio</h3>
+                                    <p class="text-sm text-gray-500">Interface LLM GUI</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">⚠️ Limité</span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Interface graphique pour gérer et exécuter des modèles LLM localement. 
+                            Peut être lent sur votre Mac sans GPU dédié.
+                        </p>
+                        
+                        <div class="bg-yellow-50 p-3 rounded mb-4">
+                            <h5 class="font-medium text-sm mb-2">Limitations sur votre Mac:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Modèles >7B très lents</li>
+                                <li>• Préférer Ollama en CLI</li>
+                                <li>• RAM limitée à 8GB</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="bg-indigo-500 text-white px-3 py-2 rounded hover:bg-indigo-600 transition-colors text-sm flex-1">
+                                <i class="fas fa-download mr-1"></i>Télécharger
+                            </button>
+                            <a href="https://lmstudio.ai" target="_blank" class="bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stable Diffusion CPU -->
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-image text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">Stable Diffusion</h3>
+                                    <p class="text-sm text-gray-500">Génération d'images</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">❌ Cloud recommandé</span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Génération d'images par IA. Très lent sur CPU, recommandé d'utiliser 
+                            des services cloud comme Replicate ou Hugging Face Spaces.
+                        </p>
+                        
+                        <div class="bg-red-50 p-3 rounded mb-4">
+                            <h5 class="font-medium text-sm mb-2">Performance CPU:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• 512x512: ~15-30 minutes</li>
+                                <li>• Mieux: utiliser le cloud</li>
+                                <li>• Alternative: DALL-E API</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="bg-pink-500 text-white px-3 py-2 rounded hover:bg-pink-600 transition-colors text-sm flex-1">
+                                <i class="fas fa-cloud mr-1"></i>Services Cloud
+                            </button>
+                            <a href="https://huggingface.co/spaces" target="_blank" class="bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Generation WebUI -->
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-teal-500 to-teal-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-cogs text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">Text Generation WebUI</h3>
+                                    <p class="text-sm text-gray-500">Interface LLM avancée</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">⚠️ GPU requis</span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Interface web complète pour les LLM avec fine-tuning et paramètres avancés. 
+                            Limité sans GPU sur votre Mac.
+                        </p>
+                        
+                        <div class="bg-yellow-50 p-3 rounded mb-4">
+                            <h5 class="font-medium text-sm mb-2">Alternative recommandée:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Utiliser Ollama + cette interface</li>
+                                <li>• Ou services cloud (Colab, RunPod)</li>
+                                <li>• Fine-tuning impossible localement</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="bg-teal-500 text-white px-3 py-2 rounded hover:bg-teal-600 transition-colors text-sm flex-1">
+                                <i class="fas fa-info mr-1"></i>Voir alternatives
+                            </button>
+                            <a href="https://github.com/oobabooga/text-generation-webui" target="_blank" class="bg-gray-500 text-white px-3 py-2 rounded hover:gray-600 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JupyterLab -->
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-code text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">JupyterLab</h3>
+                                    <p class="text-sm text-gray-500">IDE IA interactif</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">✅ Optimal</span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Environnement de développement interactif Python parfait pour 
+                            l'expérimentation IA et la visualisation de données.
+                        </p>
+                        
+                        <div class="bg-gray-50 p-3 rounded mb-4">
+                            <h5 class="font-medium text-sm mb-2">Extensions utiles:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• jupyterlab-lsp (autocomplétion)</li>
+                                <li>• jupyterlab-git (intégration Git)</li>
+                                <li>• Plotly, Matplotlib (viz)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 transition-colors text-sm flex-1">
+                                <i class="fas fa-play mr-1"></i>Lancer
+                            </button>
+                            <a href="https://jupyterlab.readthedocs.io" target="_blank" class="bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="mt-3 text-xs text-gray-500">
+                            <strong>Installation:</strong> pip install jupyterlab
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Docker -->
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-lg flex items-center justify-center">
+                                    <i class="fab fa-docker text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold">Docker</h3>
+                                    <p class="text-sm text-gray-500">Conteneurs</p>
+                                </div>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">✅ Essentiel</span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">
+                            Conteneurisation pour isoler et gérer facilement tous vos outils IA 
+                            sans conflits de dépendances.
+                        </p>
+                        
+                        <div class="bg-gray-50 p-3 rounded mb-4">
+                            <h5 class="font-medium text-sm mb-2">Avantages:</h5>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• Isolation des environnements</li>
+                                <li>• Déploiement reproductible</li>
+                                <li>• Gestion facile des versions</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <button class="bg-cyan-500 text-white px-3 py-2 rounded hover:bg-cyan-600 transition-colors text-sm flex-1">
+                                <i class="fas fa-download mr-1"></i>Installer
+                            </button>
+                            <a href="https://docker.com" target="_blank" class="bg-gray-500 text-white px-3 py-2 rounded hover:bg-gray-600 transition-colors text-sm">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="mt-3 text-xs text-gray-500">
+                            <strong>Installation:</strong> Docker Desktop pour Mac
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Configuration Section -->
+        <section id="config" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Configuration & Optimisation</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- System Optimization -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-cog text-gray-600 mr-2"></i>
+                        Optimisation Système
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h5 class="font-medium">Gestion mémoire (8GB RAM)</h5>
+                            <p class="text-sm text-gray-600 mt-1">
+                                Limitez les modèles à 4GB max, utilisez le swap si nécessaire, 
+                                fermez les applications non-essentielles.
+                            </p>
+                        </div>
+                        
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h5 class="font-medium">Optimisation CPU Intel</h5>
+                            <p class="text-sm text-gray-600 mt-1">
+                                Activez les optimisations Intel MKL, utilisez tous les cœurs disponibles, 
+                                préférez les modèles quantifiés.
+                            </p>
+                        </div>
+                        
+                        <div class="border-l-4 border-orange-500 pl-4">
+                            <h5 class="font-medium">Stockage SSD</h5>
+                            <p class="text-sm text-gray-600 mt-1">
+                                Gardez au moins 50GB libres, utilisez la compression pour les modèles, 
+                                cache sur SSD pour de meilleures performances.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Model Recommendations -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-brain text-gray-600 mr-2"></i>
+                        Modèles Recommandés
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-green-50 p-3 rounded">
+                            <h5 class="font-medium text-green-800">LLaMA 2 7B Q4_0</h5>
+                            <p class="text-xs text-green-600">~4GB RAM, bon équilibre performance/qualité</p>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-3 rounded">
+                            <h5 class="font-medium text-blue-800">Mistral 7B Instruct Q4_K_M</h5>
+                            <p class="text-xs text-blue-600">~4.4GB RAM, excellent pour le code</p>
+                        </div>
+                        
+                        <div class="bg-purple-50 p-3 rounded">
+                            <h5 class="font-medium text-purple-800">CodeLlama 7B Q4_0</h5>
+                            <p class="text-xs text-purple-600">~4GB RAM, spécialisé programmation</p>
+                        </div>
+                        
+                        <div class="bg-orange-50 p-3 rounded">
+                            <h5 class="font-medium text-orange-800">TinyLlama 1.1B Q8_0</h5>
+                            <p class="text-xs text-orange-600">~1.2GB RAM, ultra-rapide pour les tests</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section id="docs" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Documentation & Guides</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Installation Guide -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-download text-blue-600 mr-2"></i>
+                        Guide d'installation
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 p-3 rounded">
+                            <h5 class="font-medium mb-2">1. Prérequis système</h5>
+                            <pre class="text-xs bg-gray-800 text-green-400 p-2 rounded overflow-x-auto"><code># Vérifier la version macOS
+sw_vers
+
+# Installer Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Installer Python 3.11+
+brew install python@3.11</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-3 rounded">
+                            <h5 class="font-medium mb-2">2. Installation Ollama</h5>
+                            <pre class="text-xs bg-gray-800 text-green-400 p-2 rounded overflow-x-auto"><code># Installation automatique
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# Démarrer le service
+ollama serve
+
+# Télécharger un modèle
+ollama pull llama2:7b-chat-q4_0</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-3 rounded">
+                            <h5 class="font-medium mb-2">3. Installation Whisper.cpp</h5>
+                            <pre class="text-xs bg-gray-800 text-green-400 p-2 rounded overflow-x-auto"><code># Cloner et compiler
+git clone https://github.com/ggerganov/whisper.cpp
+cd whisper.cpp
+make
+
+# Télécharger le modèle base
+bash ./models/download-ggml-model.sh base</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Start -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-rocket text-green-600 mr-2"></i>
+                        Démarrage rapide
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 p-3 rounded">
+                            <h5 class="font-medium mb-2">Lancer cette interface</h5>
+                            <pre class="text-xs bg-gray-800 text-green-400 p-2 rounded overflow-x-auto"><code># Cloner le projet
+git clone [votre-repo]
+cd mosaic-agent
+
+# Installer les dépendances
+pip install -r requirements.txt
+
+# Lancer l'interface web
+python app.py
+
+# Ouvrir dans le navigateur
+open http://localhost:5000</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-3 rounded">
+                            <h5 class="font-medium mb-2">Test rapide avec Ollama</h5>
+                            <pre class="text-xs bg-gray-800 text-green-400 p-2 rounded overflow-x-auto"><code># API call simple
+curl http://localhost:11434/api/generate -d '{
+  "model": "llama2:7b-chat-q4_0",
+  "prompt": "Écris une fonction Python pour trier une liste",
+  "stream": false
+}'</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-3 rounded">
+                            <h5 class="font-medium mb-2">Intégration Python</h5>
+                            <pre class="text-xs bg-gray-800 text-green-400 p-2 rounded overflow-x-auto"><code># Exemple client Ollama
+import requests
+
+def query_ollama(prompt):
+    response = requests.post('http://localhost:11434/api/generate', 
+                           json={'model': 'llama2:7b-chat-q4_0', 
+                                'prompt': prompt, 'stream': False})
+    return response.json()['response']</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h4 class="text-lg font-semibold mb-3">Mosaic Agent</h4>
+                    <p class="text-gray-400 text-sm">
+                        Interface de contrôle centralisée pour outils d'IA open source. 
+                        Optimisé pour MacBook Pro 2015.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-3">Liens utiles</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="https://ollama.ai" class="text-gray-400 hover:text-white">Ollama</a></li>
+                        <li><a href="https://github.com/ggerganov/whisper.cpp" class="text-gray-400 hover:text-white">Whisper.cpp</a></li>
+                        <li><a href="https://www.trychroma.com" class="text-gray-400 hover:text-white">ChromaDB</a></li>
+                        <li><a href="https://python.langchain.com" class="text-gray-400 hover:text-white">LangChain</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-3">Support</h4>
+                    <p class="text-gray-400 text-sm mb-2">
+                        Configuration: macOS 12.7.6<br>
+                        RAM: 8GB | CPU: Intel Core i5<br>
+                        GPU: Intel Iris Pro (intégré)
+                    </p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-sm">
+                <p>&copy; 2024 Mosaic Agent - Interface de Codage IA. Projet open source.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="static/app.js"></script>
+</body>
+</html>

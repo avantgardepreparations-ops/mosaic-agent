@@ -1,0 +1,150 @@
+/* App.css */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #4a5568;
+}
+
+.app-title h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #48bb78;
+}
+
+.app-title p {
+  margin: 0.2rem 0 0 0;
+  font-size: 0.875rem;
+  color: #a0aec0;
+}
+
+.app-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.nav-button.active {
+  background: #48bb78;
+  border-color: #48bb78;
+  box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.single-view {
+  flex: 1;
+  padding: 1rem;
+}
+
+.split-view {
+  flex: 1;
+  display: flex;
+  gap: 0;
+}
+
+.split-panel {
+  flex: 1;
+  padding: 1rem;
+  min-width: 0; /* Allow panels to shrink */
+}
+
+.split-divider {
+  width: 1px;
+  background: #4a5568;
+  cursor: col-resize;
+  transition: background-color 0.2s ease;
+}
+
+.split-divider:hover {
+  background: #48bb78;
+  width: 3px;
+}
+
+.app-footer {
+  background: #2d3748;
+  padding: 0.5rem 2rem;
+  border-top: 1px solid #4a5568;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.status-info {
+  display: flex;
+  gap: 1rem;
+  color: #a0aec0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .split-view {
+    flex-direction: column;
+  }
+  
+  .split-divider {
+    height: 1px;
+    width: auto;
+    cursor: row-resize;
+  }
+  
+  .split-panel {
+    padding: 0.5rem;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2d3748;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #48bb78;
+}

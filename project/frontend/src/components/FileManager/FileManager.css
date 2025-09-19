@@ -1,0 +1,342 @@
+/* FileManager.css */
+.file-manager {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #1a1a1a;
+  border-radius: 8px;
+  border: 1px solid #4a5568;
+  position: relative;
+}
+
+/* Header */
+.file-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #4a5568;
+  background: #2d3748;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.breadcrumb-item {
+  background: none;
+  border: none;
+  color: #48bb78;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+}
+
+.breadcrumb-item:hover {
+  background: rgba(72, 187, 120, 0.1);
+}
+
+.breadcrumb-separator {
+  color: #a0aec0;
+  margin: 0 0.25rem;
+}
+
+.file-manager-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Upload Section */
+.upload-section {
+  border-bottom: 1px solid #4a5568;
+  background: #2d3748;
+}
+
+/* Main Content */
+.file-manager-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.file-list-panel {
+  flex: 1;
+  min-width: 300px;
+}
+
+.file-preview-panel {
+  width: 400px;
+  border-left: 1px solid #4a5568;
+  background: #2d3748;
+}
+
+/* Drag and Drop Overlay */
+.drag-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(72, 187, 120, 0.1);
+  border: 2px dashed #48bb78;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.drag-message {
+  text-align: center;
+  color: #48bb78;
+}
+
+.drag-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.drag-message h3 {
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+.drag-message p {
+  margin: 0;
+  color: #a0aec0;
+  font-size: 0.875rem;
+}
+
+/* File List Styles */
+.file-list {
+  height: 100%;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.file-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #4a5568;
+}
+
+.file-list-title {
+  font-size: 1.125rem;
+  color: #48bb78;
+  margin: 0;
+}
+
+.file-list-info {
+  font-size: 0.75rem;
+  color: #a0aec0;
+}
+
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.file-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.file-table th,
+.file-table td {
+  text-align: left;
+  padding: 0.5rem;
+  border-bottom: 1px solid #4a5568;
+}
+
+.file-table th {
+  background: #2d3748;
+  color: #48bb78;
+  font-weight: 600;
+  font-size: 0.875rem;
+  position: sticky;
+  top: 0;
+}
+
+.file-item {
+  background: #2d3748;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.file-item:hover {
+  background: #4a5568;
+  border-color: #48bb78;
+  transform: translateY(-1px);
+}
+
+.file-item.selected {
+  background: rgba(72, 187, 120, 0.1);
+  border-color: #48bb78;
+}
+
+.file-item-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.file-item-name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  word-break: break-word;
+  font-size: 0.875rem;
+}
+
+.file-item-info {
+  font-size: 0.75rem;
+  color: #a0aec0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-item-size {
+  color: #a0aec0;
+}
+
+.file-item-date {
+  color: #a0aec0;
+}
+
+.file-item-actions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: none;
+  gap: 0.25rem;
+}
+
+.file-item:hover .file-item-actions {
+  display: flex;
+}
+
+.file-action-btn {
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
+  padding: 0.25rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: background-color 0.2s ease;
+}
+
+.file-action-btn:hover {
+  background: rgba(72, 187, 120, 0.8);
+}
+
+.file-action-btn.danger:hover {
+  background: rgba(245, 101, 101, 0.8);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #a0aec0;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  margin: 0.5rem 0;
+  color: #e2e8f0;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  color: #a0aec0;
+  gap: 1rem;
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  gap: 0.25rem;
+  background: #1a1a1a;
+  border: 1px solid #4a5568;
+  border-radius: 6px;
+  padding: 0.25rem;
+}
+
+.view-toggle-btn {
+  background: none;
+  border: none;
+  color: #a0aec0;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-toggle-btn.active {
+  background: #48bb78;
+  color: white;
+}
+
+.view-toggle-btn:hover:not(.active) {
+  background: #4a5568;
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .file-manager-content {
+    flex-direction: column;
+  }
+  
+  .file-preview-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #4a5568;
+  }
+  
+  .file-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .file-manager-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .breadcrumb {
+    justify-content: center;
+  }
+  
+  .file-manager-actions {
+    justify-content: center;
+  }
+}

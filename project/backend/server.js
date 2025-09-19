@@ -10,7 +10,7 @@ const filesRouter = require('./routes/files');
 const terminalRouter = require('./routes/terminal');
 
 // Import middleware
-const securityMiddleware = require('./middleware/security');
+const { securityMiddleware } = require('./middleware/security');
 
 const app = express();
 const server = http.createServer(app);

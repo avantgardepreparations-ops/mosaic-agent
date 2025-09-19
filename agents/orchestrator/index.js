@@ -293,7 +293,7 @@ class Orchestrator {
    */
   async demonstrateCapabilities() {
     console.log('\n🎭 Demonstrating Orchestrator Capabilities');
-    console.log('=' .repeat(50));
+    console.log('='.repeat(50));
     
     const demoPrompt = "Explain the benefits of using microservices architecture in modern web development.";
     

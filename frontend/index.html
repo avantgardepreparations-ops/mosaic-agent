@@ -6,7 +6,7 @@
     <title>Mosaic Agent - Infrastructure Platform</title>
     
     <!-- Security headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; connect-src 'self' ws: wss:; font-src 'self'; img-src 'self' data: blob:;">
     
     <!-- React and React DOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>

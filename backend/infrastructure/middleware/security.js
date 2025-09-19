@@ -60,11 +60,22 @@ const securityHeaders = helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            scriptSrc: ["'self'", "'unsafe-inline'"],
-            styleSrc: ["'self'", "'unsafe-inline'"],
+            scriptSrc: [
+                "'self'", 
+                "'unsafe-inline'", 
+                "'unsafe-eval'",
+                "https://unpkg.com",
+                "https://cdn.tailwindcss.com"
+            ],
+            styleSrc: [
+                "'self'", 
+                "'unsafe-inline'",
+                "https://cdn.tailwindcss.com",
+                "https://fonts.googleapis.com"
+            ],
             imgSrc: ["'self'", "data:", "blob:"],
             connectSrc: ["'self'", "ws:", "wss:"],
-            fontSrc: ["'self'"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
             objectSrc: ["'none'"],
             mediaSrc: ["'self'"],
             frameSrc: ["'none'"],

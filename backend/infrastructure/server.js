@@ -344,8 +344,7 @@ class MosaicAgentServer {
 // Create and start server if this file is run directly
 if (require.main === module) {
     const server = new MosaicAgentServer({
-        enableSandbox: process.env.ENABLE_SANDBOX === 'true',
-        staticPath: process.env.STATIC_PATH
+        enableSandbox: process.env.ENABLE_SANDBOX === 'true'
     });
     
     // Graceful shutdown handlers

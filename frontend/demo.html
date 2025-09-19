@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mosaic Agent - Infrastructure Platform</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            background-color: #f8fafc;
+            color: #1a202c;
+        }
+        
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #10b981;
+        }
+        
+        .content {
+            flex: 1;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 1rem;
+        }
+        
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            border-bottom-color: #667eea;
+            background: #f8fafc;
+        }
+        
+        .tab:hover {
+            background: #f1f5f9;
+        }
+        
+        .panel {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .metric {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .metric-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.25rem;
+        }
+        
+        .btn:hover {
+            background: #5a67d8;
+        }
+        
+        .btn-success {
+            background: #10b981;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        .terminal {
+            background: #1a202c;
+            color: #68d391;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            height: 300px;
+            overflow-y: auto;
+        }
+        
+        .status-list {
+            list-style: none;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .status-value {
+            font-weight: 500;
+        }
+        
+        .text-success { color: #10b981; }
+        .text-warning { color: #f59e0b; }
+        .text-danger { color: #ef4444; }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden { display: none; }
+        
+        @media (max-width: 768px) {
+            .content { flex-direction: column; }
+            .sidebar { width: 100%; height: 200px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🤖 Mosaic Agent</h1>
+                    <span>Infrastructure Platform</span>
+                </div>
+                <div class="status">
+                    <div class="status-indicator"></div>
+                    <span id="status-text">System Online</span>
+                    <span>v1.0.0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <h3>System Status</h3>
+                <div id="system-status">
+                    <div class="loading"></div>
+                    <span>Loading...</span>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h4>Quick Actions</h4>
+                    <button class="btn" onclick="refreshStatus()">🔄 Refresh Status</button>
+                    <button class="btn" onclick="openHealthCheck()">🩺 Health Check</button>
+                    <button class="btn" onclick="openSecurityPolicies()">🔒 Security Policies</button>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <div class="tab active" onclick="showTab('files')">📁 File Manager</div>
+                    <div class="tab" onclick="showTab('terminal')">💻 Terminal</div>
+                    <div class="tab" onclick="showTab('agents')">🤖 Agent Workflow</div>
+                    <div class="tab" onclick="showTab('security')">🔒 Security</div>
+                </div>
+                
+                <!-- Panels -->
+                <div class="panel">
+                    <!-- File Manager Panel -->
+                    <div id="files-panel">
+                        <h2>📁 File Manager</h2>
+                        <div class="card">
+                            <h3>File Operations</h3>
+                            <p>Upload, navigate, and preview files with comprehensive security validation.</p>
+                            <div class="grid">
+                                <div class="metric">
+                                    <div class="metric-value">0</div>
+                                    <div class="metric-label">Files Uploaded</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">10MB</div>
+                                    <div class="metric-label">Max File Size</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">✓</div>
+                                    <div class="metric-label">Security Validation</div>
+                                </div>
+                            </div>
+                            <button class="btn btn-success" onclick="testFileAPI()">Test File API</button>
+                            <button class="btn" onclick="listFiles()">List Files</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Terminal Panel -->
+                    <div id="terminal-panel" class="hidden">
+                        <h2>💻 Terminal</h2>
+                        <div class="card">
+                            <h3>WebSocket Terminal Integration</h3>
+                            <p>Real-time terminal with multi-tab support and security validation.</p>
+                            <div class="terminal">
+                                <div>Mosaic Agent Terminal v1.0.0</div>
+                                <div>WebSocket connection: <span id="ws-status" class="text-warning">Disconnected</span></div>
+                                <div>Security validation: <span class="text-success">Active</span></div>
+                                <div>Rate limiting: <span class="text-success">30 commands/minute</span></div>
+                                <div style="margin-top: 1rem;">
+                                    <span style="color: #667eea;">$</span> <input type="text" id="terminal-input" style="background: transparent; border: none; color: #68d391; outline: none;" placeholder="Enter command..." onkeypress="handleTerminalInput(event)">
+                                </div>
+                                <div id="terminal-output"></div>
+                            </div>
+                            <button class="btn btn-success" onclick="testTerminalAPI()">Test Terminal API</button>
+                            <button class="btn" onclick="connectWebSocket()">Connect WebSocket</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Agent Workflow Panel -->
+                    <div id="agents-panel" class="hidden">
+                        <h2>🤖 Agent Workflow Manager</h2>
+                        <div class="grid">
+                            <div class="metric">
+                                <div class="metric-value" id="active-agents">0</div>
+                                <div class="metric-label">Active Agents</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value" id="active-workflows">0</div>
+                                <div class="metric-label">Workflows</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value" id="completed-tasks">0</div>
+                                <div class="metric-label">Completed Tasks</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value" id="avg-execution">0ms</div>
+                                <div class="metric-label">Avg Execution Time</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Agent Orchestration</h3>
+                            <p>Multi-agent workflow coordination with progress tracking and task distribution.</p>
+                            <button class="btn btn-success" onclick="setupDemoAgents()">Setup Demo Agents</button>
+                            <button class="btn" onclick="getOrchestratorStatus()">Get Status</button>
+                            <button class="btn" onclick="createSampleWorkflow()">Create Sample Workflow</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Panel -->
+                    <div id="security-panel" class="hidden">
+                        <h2>🔒 Security & Sandbox</h2>
+                        <div class="grid">
+                            <div class="card">
+                                <h3>Security Features</h3>
+                                <ul class="status-list">
+                                    <li class="status-item">
+                                        <span>Command validation</span>
+                                        <span class="status-value text-success">✓ Active</span>
+                                    </li>
+                                    <li class="status-item">
+                                        <span>Rate limiting</span>
+                                        <span class="status-value text-success">✓ Active</span>
+                                    </li>
+                                    <li class="status-item">
+                                        <span>Path traversal protection</span>
+                                        <span class="status-value text-success">✓ Active</span>
+                                    </li>
+                                    <li class="status-item">
+                                        <span>File type validation</span>
+                                        <span class="status-value text-success">✓ Active</span>
+                                    </li>
+                                    <li class="status-item">
+                                        <span>Docker sandbox</span>
+                                        <span class="status-value text-warning" id="sandbox-status">○ Optional</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card">
+                                <h3>Rate Limits</h3>
+                                <ul class="status-list">
+                                    <li class="status-item">
+                                        <span>General API</span>
+                                        <span class="status-value">100/15min</span>
+                                    </li>
+                                    <li class="status-item">
+                                        <span>File uploads</span>
+                                        <span class="status-value">10/5min</span>
+                                    </li>
+                                    <li class="status-item">
+                                        <span>Terminal commands</span>
+                                        <span class="status-value">30/min</span>
+                                    </li>
+                                    <li class="status-item">
+                                        <span>Agent operations</span>
+                                        <span class="status-value">50/10min</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Security Validation</h3>
+                            <input type="text" id="command-input" placeholder="Enter command to validate..." style="width: 100%; padding: 0.5rem; margin: 0.5rem 0; border: 1px solid #e2e8f0; border-radius: 4px;">
+                            <button class="btn btn-success" onclick="validateCommand()">Validate Command</button>
+                            <div id="validation-result" style="margin-top: 1rem;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global state
+        let currentTab = 'files';
+        let websocket = null;
+        
+        // Load system status on startup
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshStatus();
+            setInterval(refreshStatus, 30000); // Refresh every 30 seconds
+        });
+        
+        // Tab management
+        function showTab(tabName) {
+            // Update tab appearance
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide panels
+            document.querySelectorAll('[id$="-panel"]').forEach(panel => panel.classList.add('hidden'));
+            document.getElementById(tabName + '-panel').classList.remove('hidden');
+            
+            currentTab = tabName;
+        }
+        
+        // System status functions
+        async function refreshStatus() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                document.getElementById('status-text').textContent = 
+                    data.status === 'ok' ? 'System Online' : 'System Error';
+                
+                const statusHtml = `
+                    <ul class="status-list">
+                        <li class="status-item">
+                            <span>Status:</span>
+                            <span class="status-value ${data.status === 'ok' ? 'text-success' : 'text-danger'}">${data.status}</span>
+                        </li>
+                        <li class="status-item">
+                            <span>Uptime:</span>
+                            <span class="status-value">${Math.floor(data.uptime / 3600)}h ${Math.floor((data.uptime % 3600) / 60)}m</span>
+                        </li>
+                        <li class="status-item">
+                            <span>WebSocket:</span>
+                            <span class="status-value text-success">${data.services.websocket}</span>
+                        </li>
+                        <li class="status-item">
+                            <span>Sandbox:</span>
+                            <span class="status-value text-warning">${data.services.sandbox}</span>
+                        </li>
+                    </ul>
+                `;
+                document.getElementById('system-status').innerHTML = statusHtml;
+                
+            } catch (error) {
+                console.error('Error refreshing status:', error);
+                document.getElementById('system-status').innerHTML = 
+                    '<span class="text-danger">Error loading status</span>';
+            }
+        }
+        
+        // API test functions
+        async function testFileAPI() {
+            try {
+                const response = await fetch('/api/files?path=/');
+                const data = await response.json();
+                alert(`File API Test: ${response.ok ? 'Success' : 'Error'}\\nFiles found: ${data.files?.length || 0}`);
+            } catch (error) {
+                alert('File API Test: Error - ' + error.message);
+            }
+        }
+        
+        async function listFiles() {
+            try {
+                const response = await fetch('/api/files?path=/');
+                const data = await response.json();
+                console.log('Files:', data);
+                alert(`Files in root directory: ${data.files?.length || 0}\\nCheck console for details`);
+            } catch (error) {
+                alert('Error listing files: ' + error.message);
+            }
+        }
+        
+        async function testTerminalAPI() {
+            try {
+                const response = await fetch('/api/terminal/execute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command: 'echo "Hello from Mosaic Agent!"' })
+                });
+                const data = await response.json();
+                alert(`Terminal API Test: ${response.ok ? 'Success' : 'Error'}\\nOutput: ${data.stdout || data.error}`);
+            } catch (error) {
+                alert('Terminal API Test: Error - ' + error.message);
+            }
+        }
+        
+        function connectWebSocket() {
+            const sessionId = 'demo_' + Date.now();
+            websocket = new WebSocket(`ws://localhost:8000/api/terminal/${sessionId}`);
+            
+            websocket.onopen = () => {
+                document.getElementById('ws-status').textContent = 'Connected';
+                document.getElementById('ws-status').className = 'text-success';
+            };
+            
+            websocket.onclose = () => {
+                document.getElementById('ws-status').textContent = 'Disconnected';
+                document.getElementById('ws-status').className = 'text-warning';
+            };
+            
+            websocket.onmessage = (event) => {
+                const output = document.getElementById('terminal-output');
+                output.innerHTML += '<div>' + event.data + '</div>';
+            };
+        }
+        
+        function handleTerminalInput(event) {
+            if (event.key === 'Enter') {
+                const command = event.target.value;
+                if (websocket && websocket.readyState === WebSocket.OPEN) {
+                    websocket.send(JSON.stringify({ type: 'command', command }));
+                    event.target.value = '';
+                } else {
+                    alert('WebSocket not connected. Click "Connect WebSocket" first.');
+                }
+            }
+        }
+        
+        async function getOrchestratorStatus() {
+            try {
+                const response = await fetch('/api/orchestrator/status');
+                const data = await response.json();
+                
+                document.getElementById('active-agents').textContent = data.agents.length;
+                document.getElementById('active-workflows').textContent = data.workflows.length;
+                document.getElementById('completed-tasks').textContent = data.metrics.tasksCompleted;
+                document.getElementById('avg-execution').textContent = Math.round(data.metrics.averageExecutionTime) + 'ms';
+                
+                alert('Orchestrator status updated successfully!');
+            } catch (error) {
+                alert('Error getting orchestrator status: ' + error.message);
+            }
+        }
+        
+        async function setupDemoAgents() {
+            try {
+                const response = await fetch('/api/orchestrator/demo/setup', { method: 'POST' });
+                const data = await response.json();
+                alert(`Demo setup: ${response.ok ? 'Success' : 'Error'}\\nAgents: ${data.agents?.length || 0}\\nWorkflow created: ${data.workflow ? 'Yes' : 'No'}`);
+                getOrchestratorStatus();
+            } catch (error) {
+                alert('Error setting up demo: ' + error.message);
+            }
+        }
+        
+        async function createSampleWorkflow() {
+            try {
+                const workflow = {
+                    id: 'sample_workflow_' + Date.now(),
+                    definition: {
+                        name: 'Sample Processing Workflow',
+                        steps: [
+                            {
+                                name: 'process_data',
+                                agentId: 'file_processor_1',
+                                taskType: 'process',
+                                taskData: { message: 'Hello from workflow' }
+                            }
+                        ]
+                    }
+                };
+                
+                const response = await fetch('/api/orchestrator/workflows', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(workflow)
+                });
+                
+                const data = await response.json();
+                alert(`Workflow creation: ${response.ok ? 'Success' : 'Error'}\\nWorkflow ID: ${data.workflow?.id || 'None'}`);
+            } catch (error) {
+                alert('Error creating workflow: ' + error.message);
+            }
+        }
+        
+        async function validateCommand() {
+            const command = document.getElementById('command-input').value;
+            if (!command) {
+                alert('Please enter a command to validate');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/security/validate-command', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command })
+                });
+                
+                const data = await response.json();
+                const resultDiv = document.getElementById('validation-result');
+                
+                if (data.valid) {
+                    resultDiv.innerHTML = `<div class="text-success">✓ Command is valid and safe</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="text-danger">✗ Command blocked: ${data.reason}</div>`;
+                }
+            } catch (error) {
+                document.getElementById('validation-result').innerHTML = 
+                    `<div class="text-danger">Error validating command: ${error.message}</div>`;
+            }
+        }
+        
+        // Quick action functions
+        function openHealthCheck() {
+            window.open('/health', '_blank');
+        }
+        
+        function openSecurityPolicies() {
+            window.open('/api/security/policies', '_blank');
+        }
+    </script>
+</body>
+</html>

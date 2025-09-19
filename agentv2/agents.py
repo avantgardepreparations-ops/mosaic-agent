@@ -1,6 +1,7 @@
 from crewai import Agent
 from langchain_community.llms import Ollama
 from tools.local_llm_tool import MultiLLMQueryTool
+from tools.code_analysis_tools import CodeLinterTool, CodeSandboxTool
 from config import LOCAL_MODELS_TO_QUERY, MAIN_LLM_MODEL
 
 # Initialisation du LLM principal pour le raisonnement des agents
@@ -8,6 +9,10 @@ main_llm = Ollama(model=MAIN_LLM_MODEL)
 
 # Initialisation de l'outil de distribution multi-LLM
 multi_llm_tool = MultiLLMQueryTool(models=LOCAL_MODELS_TO_QUERY)
+
+# Initialisation des outils d'analyse de code
+code_linter_tool = CodeLinterTool()
+code_sandbox_tool = CodeSandboxTool()
 
 # --- Définition des Agents ---
 
@@ -32,8 +37,7 @@ innovator_agent = Agent(
   role='Ingénieur en Amélioration de Code et Sécurité',
   goal="Prendre une solution préliminaire, l'analyser pour trouver des failles de sécurité, des optimisations de performance et des possibilités d'extension.",
   backstory="Passionné par l'excellence technique, vous rendez le code non seulement fonctionnel, mais aussi robuste, rapide et sécurisé.",
-  # Note: Un outil de 'sandbox' pour exécuter le code serait ajouté ici.
-  # tools=[code_sandbox_tool],
+  tools=[code_linter_tool, code_sandbox_tool],
   llm=main_llm,
   verbose=True
 )

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "validate": "node validate-separation.js",
-    "test": "node test-separation.js"
+    "test": "node test-separation.js",
+    "test-agents": "node test-agents.js"
   },
   "keywords": [
     "multi-agent",

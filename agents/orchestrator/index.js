@@ -55,7 +55,7 @@ class Orchestrator {
     }
 
     console.log('\n🎯 Processing user request...');
-    console.log('=' .repeat(50));
+    console.log('='.repeat(50));
     
     try {
       // Phase 1: Distribution vers les APIs externes

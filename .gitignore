@@ -167,3 +167,6 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Agent environment files
+.env.agents

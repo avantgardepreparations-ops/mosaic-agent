@@ -34,6 +34,7 @@
                 </div>
                 <nav class="hidden md:flex space-x-6">
                     <a href="#dashboard" class="hover:text-blue-200 transition-colors"><i class="fas fa-tachometer-alt mr-2"></i>Tableau de Bord</a>
+                    <a href="#agent-workflow" class="hover:text-blue-200 transition-colors"><i class="fas fa-brain mr-2"></i>Workflow IA</a>
                     <a href="#tools" class="hover:text-blue-200 transition-colors"><i class="fas fa-tools mr-2"></i>Applications</a>
                     <a href="#config" class="hover:text-blue-200 transition-colors"><i class="fas fa-cog mr-2"></i>Configuration</a>
                     <a href="#docs" class="hover:text-blue-200 transition-colors"><i class="fas fa-book mr-2"></i>Documentation</a>
@@ -109,6 +110,18 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Agent Workflow Section -->
+        <section id="agent-workflow" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 flex items-center">
+                <i class="fas fa-brain text-ai-primary mr-3"></i>
+                Workflow Multi-Agent IA
+            </h2>
+            
+            <div id="agent-workflow-container">
+                <!-- Le composant AgentWorkflow sera initialisé ici -->
             </div>
         </section>
 
@@ -226,5 +239,19 @@ python app.py
 
     <!-- JavaScript -->
     <script src="app.js"></script>
+    <!-- Agent Workflow Component -->
+    <link rel="stylesheet" href="frontend/components/AgentWorkflow/AgentWorkflow.css">
+    <script src="frontend/components/AgentWorkflow/AgentWorkflow.js"></script>
+    <script>
+        // Initialiser le composant AgentWorkflow après le chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const agentWorkflow = new AgentWorkflow('agent-workflow-container');
+                console.log('🤖 AgentWorkflow initialisé avec succès');
+            } catch (error) {
+                console.error('❌ Erreur lors de l\'initialisation du AgentWorkflow:', error);
+            }
+        });
+    </script>
 </body>
 </html>

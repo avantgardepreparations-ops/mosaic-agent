@@ -1,0 +1,25 @@
+{
+  "name": "mosaic-agent",
+  "version": "1.0.0", 
+  "description": "Mosaic Agent with DistributionAgent for external API integration",
+  "main": "agents/orchestrator/index.js",
+  "scripts": {
+    "start": "node agents/orchestrator/index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "distribution",
+    "api-integration"
+  ],
+  "author": "Mosaic Agent Team",
+  "license": "MIT"
+}

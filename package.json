@@ -1,0 +1,89 @@
+{
+  "name": "mosaic-agent-infrastructure",
+  "version": "1.0.0",
+  "description": "Multi-agent infrastructure with file management, terminal integration, and security sandbox",
+  "main": "backend/infrastructure/server.js",
+  "scripts": {
+    "start": "node backend/infrastructure/server.js",
+    "dev": "nodemon backend/infrastructure/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint backend/ security/",
+    "lint:fix": "eslint backend/ security/ --fix",
+    "validate-separation": "cd multi-agent-main && node validate-separation.js",
+    "setup:demo": "node scripts/setup-demo.js",
+    "docker:build": "docker build -t mosaic-agent-infrastructure .",
+    "docker:run": "docker run -p 8000:8000 mosaic-agent-infrastructure"
+  },
+  "keywords": [
+    "multi-agent",
+    "file-management",
+    "terminal",
+    "security",
+    "sandbox",
+    "orchestrator",
+    "infrastructure"
+  ],
+  "author": "Mosaic Agent Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.5.1",
+    "helmet": "^7.2.0",
+    "joi": "^17.13.3",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.1",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/avantgardepreparations-ops/mosaic-agent.git"
+  },
+  "config": {
+    "separation_enforced": true,
+    "mosaicmind_blocked": true
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.js",
+      "**/__tests__/**/*.js"
+    ],
+    "collectCoverageFrom": [
+      "backend/**/*.js",
+      "security/**/*.js",
+      "!backend/infrastructure/server.js",
+      "!**/node_modules/**"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "standard"
+    ],
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "rules": {
+      "no-console": "off",
+      "semi": [
+        "error",
+        "always"
+      ]
+    }
+  }
+}

@@ -308,9 +308,9 @@ class Orchestrator {
       if (result.success) {
         console.log('\n🎊 Demo completed successfully!');
         console.log('\n📋 Final Response:');
-        console.log('-' .repeat(30));
+        console.log('-'.repeat(30));
         console.log(result.finalResponse.content);
-        console.log('-' .repeat(30));
+        console.log('-'.repeat(30));
         console.log(`\n📊 Performance: ${result.apisSummary.successful}/${result.apisSummary.total} APIs responded in ${result.processingTime}ms`);
       } else {
         console.log('\n❌ Demo failed:', result.error);

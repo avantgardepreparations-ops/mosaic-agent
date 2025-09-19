@@ -1,0 +1,25 @@
+name: Auto PR on Push
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request for ${{ github.ref_name }}
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Automated PR: Update from ${{ github.ref_name }}'
+          body: |
+            This pull request was created automatically by a GitHub Action.
+            It syncs changes from the `${{ github.ref_name }}` branch to the `main` branch.
+          base: 'main'
+          branch: ${{ github.ref_name }}
+          commit-message: 'feat: Automated commit from ${{ github.ref_name }}'

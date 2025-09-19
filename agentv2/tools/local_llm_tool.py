@@ -1,18 +1,26 @@
 from crewai.tools import BaseTool
 from langchain_community.llms import Ollama
-from typing import Type, List
+from typing import Type, List, Any
 import concurrent.futures
+from pydantic import Field
 
 class MultiLLMQueryTool(BaseTool):
     name: str = "Multi-LLM Query Tool"
     description: str = "Prend un prompt et l'envoie à une liste prédéfinie de modèles de langage locaux (LLMs) pour obtenir diverses perspectives et solutions."
+    models: List[str] = Field(default_factory=list)
 
-    models: List[str]
+    def __init__(self, models: List[str] = None, **kwargs):
+        if models is None:
+            models = []
+        super().__init__(models=models, **kwargs)
 
     def _run(self, prompt: str) -> str:
         """
         Envoie le prompt à plusieurs modèles Ollama en parallèle et agrège leurs réponses.
         """
+        if not self.models:
+            return "--- Erreur ---\nAucun modèle configuré pour cette requête.\n"
+            
         aggregated_responses = []
 
         def query_model(model_name):
@@ -29,7 +37,3 @@ class MultiLLMQueryTool(BaseTool):
                 aggregated_responses.append(future.result())
 
         return "".join(aggregated_responses)
-
-    def __init__(self, models: List[str]):
-        super().__init__()
-        self.models = models

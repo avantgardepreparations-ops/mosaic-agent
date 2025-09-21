@@ -346,6 +346,11 @@ def health_check():
         'version': '1.0.0'
     })
 
+@app.route('/health', methods=['GET'])
+def health_alias():
+    """Health check endpoint alias for frontend compatibility"""
+    return health_check()
+
 @app.route('/api/install-guide', methods=['GET'])
 def get_install_guide():
     """Get installation guide for AI tools"""

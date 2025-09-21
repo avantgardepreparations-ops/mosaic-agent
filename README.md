@@ -193,6 +193,7 @@ mosaic-agent/
 ├── app.py              # Backend Flask
 ├── requirements.txt    # Dépendances Python
 ├── README.md           # Documentation principale
+├── main/               # 🆕 Système Multi-Agent ACTIF (workflow multi-agent opérationnel)
 ├── docs/               # Documentation supplémentaire
 ├── frontend/           # Composants frontend React
 ├── security/           # Modules de sécurité
@@ -200,6 +201,21 @@ mosaic-agent/
 ├── models/             # Modèles IA (créé automatiquement)
 ├── archive/            # Contenu expérimental archivé (NON opérationnel)
 └── docker-compose.yml  # Configuration Docker (optionnel)
+```
+
+### 🚀 Nouveau: Système Multi-Agent dans main/
+
+Le dossier `main/` contient maintenant le **système multi-agent opérationnel** avec:
+- **Workflow complet** d'orchestration d'agents IA
+- **Documentation intégrée** et scripts de test fonctionnels
+- **Séparation stricte** avec MOSAICMIND préservée
+- **Version stable** prête pour l'utilisation
+
+```bash
+# Tester le système multi-agent
+cd main/
+npm install
+npm run test-agents
 ```
 
 ## 🔍 Dépannage

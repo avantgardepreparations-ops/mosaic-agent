@@ -1,0 +1,18 @@
+{
+  "application": {
+    "name": "multi-agent-liaison",
+    "version": "1.0.0",
+    "description": "Application de liaison multi agent - JAMAIS MELANGER AVEC MOSAICMIND",
+    "separation": {
+      "enforce_separation": true,
+      "blocked_integrations": ["MOSAICMIND", "mosaicmind", "MosaicMind"],
+      "isolation_mode": "strict",
+      "warning_message": "ATTENTION: Cette application ne doit JAMAIS être mélangée avec MOSAICMIND"
+    }
+  },
+  "security": {
+    "prevent_mosaicmind_integration": true,
+    "validate_dependencies": true,
+    "strict_isolation": true
+  }
+}

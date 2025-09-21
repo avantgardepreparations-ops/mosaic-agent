@@ -6,6 +6,13 @@
 
 La version stable et opérationnelle de Mosaic Agent se trouve sur la **branche main** dans les fichiers à la racine du dépôt.
 
+### 🚀 VERSION ACTIVE MAINTENANT DISPONIBLE
+
+**Le système multi-agent est maintenant opérationnel dans le dossier `main/` à la racine du projet.**
+- Le contenu de `multi-agent-main/` a été déplacé vers `main/` pour devenir la version active
+- Le système est fonctionnel et testé
+- La séparation MOSAICMIND est strictement préservée
+
 ## 📂 Contenu Archivé
 
 ### `agents/` - Système Multi-Agent Expérimental (JavaScript)

@@ -1,29 +1,5 @@
 # Multi-Agent Liaison Application
 
-## 🚨 NOTICE IMPORTANTE - SYSTÈME DÉPLACÉ
-
-**Ce système multi-agent a été déplacé vers le dossier `main/` à la racine du projet et est maintenant OPÉRATIONNEL.**
-
-### ➡️ Nouvelle Location
-Le contenu de ce dossier se trouve maintenant dans:
-```
-/main/
-```
-
-### 🚀 Pour Utiliser le Système Multi-Agent
-```bash
-# Aller au dossier actif
-cd main/
-
-# Installer les dépendances
-npm install
-
-# Tester le système
-npm run test-agents
-```
-
----
-
 ## ⚠️ ATTENTION - SÉPARATION STRICTE REQUISE ⚠️
 
 **NE JAMAIS MÉLANGER AVEC MOSAICMIND**

@@ -1,5 +1,9 @@
 # 🤖 Mosaic Agent - Interface de Codage IA Centralisée
 
+## ✅ VERSION STABLE ET OPÉRATIONNELLE
+
+**Cette version sur la branche `main` est la version stable et opérationnelle de Mosaic Agent.**
+
 Une interface web moderne et responsive pour centraliser et gérer les meilleurs outils open source d'intelligence artificielle pour le développement. Optimisé pour **MacBook Pro 2015 (macOS 12.7.6)** avec des recommandations de compatibilité détaillées.
 
 ![Interface Preview](docs/preview.png)
@@ -188,9 +192,13 @@ mosaic-agent/
 ├── app.js              # JavaScript frontend
 ├── app.py              # Backend Flask
 ├── requirements.txt    # Dépendances Python
-├── README.md           # Documentation
+├── README.md           # Documentation principale
 ├── docs/               # Documentation supplémentaire
+├── frontend/           # Composants frontend React
+├── security/           # Modules de sécurité
+├── tests/              # Tests principaux
 ├── models/             # Modèles IA (créé automatiquement)
+├── archive/            # Contenu expérimental archivé (NON opérationnel)
 └── docker-compose.yml  # Configuration Docker (optionnel)
 ```
 
@@ -230,6 +238,15 @@ kill -9 <PID>
 3. Commit vos changements (`git commit -m 'Ajouter nouvelle fonctionnalité'`)
 4. Push vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
 5. Créer une Pull Request
+
+## 📁 Contenu Archivé
+
+Le dossier `archive/` contient des versions expérimentales et du contenu non opérationnel :
+- Systèmes multi-agents expérimentaux
+- Implémentations alternatives (CrewAI, FastAPI)
+- Infrastructures backend expérimentales
+
+⚠️ **Attention** : Le contenu archivé n'est pas opérationnel et est conservé uniquement pour référence. Consultez `archive/README.md` pour plus de détails.
 
 ## 📄 Licence
 

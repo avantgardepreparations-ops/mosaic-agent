@@ -1,0 +1,194 @@
+#!/bin/bash
+# 🚀 Script de lancement Mosaic Agent avec gestion d'erreurs
+
+set -e  # Arrêter si erreur
+
+echo "🤖 Démarrage de Mosaic Agent..."
+
+# Variables
+REPO_DIR="mosaic-agent"
+FLASK_PORT=5000
+OLLAMA_PORT=11434
+
+# Fonction pour vérifier si un port est occupé
+check_port() {
+    lsof -i :$1 > /dev/null 2>&1
+}
+
+# Arrêter les processus existants
+cleanup() {
+    echo "🧹 Nettoyage des processus existants..."
+    pkill -f "python app.py" 2>/dev/null || true
+    pkill -f "python -m http.server" 2>/dev/null || true
+}
+
+# Cloner le repo si nécessaire
+if [ ! -d "$REPO_DIR" ]; then
+    echo "📥 Clonage du repository..."
+    git clone https://github.com/avantgardepreparations-ops/mosaic-agent.git
+fi
+
+cd "$REPO_DIR"
+
+# Installer les dépendances
+echo "📦 Installation des dépendances..."
+pip install -r requirements.txt 2>/dev/null || {
+    echo "⚠️ Erreur avec requirements.txt, installation manuelle..."
+    pip install flask flask-cors requests
+}
+
+# Vérifier Ollama
+if ! command -v ollama &> /dev/null; then
+    echo "🦙 Installation d'Ollama..."
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        brew install ollama
+    else
+        curl -fsSL https://ollama.ai/install.sh | sh
+    fi
+fi
+
+# Démarrer Ollama si pas déjà lancé
+if ! check_port $OLLAMA_PORT; then
+    echo "🚀 Démarrage d'Ollama..."
+    ollama serve > /tmp/ollama.log 2>&1 &
+    sleep 3
+else
+    echo "✅ Ollama déjà en cours d'exécution"
+fi
+
+# Télécharger le modèle si nécessaire
+echo "📥 Vérification du modèle..."
+ollama list | grep -q tinyllama || ollama pull tinyllama:1.1b
+
+# Créer app.py minimal si absent
+if [ ! -f "app.py" ]; then
+    echo "📝 Création d'un app.py minimal..."
+    cat > app.py << 'EOF'
+from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import CORS
+import requests
+import os
+
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/')
+def index():
+    if os.path.exists('index.html'):
+        return send_from_directory('.', 'index.html')
+    return jsonify({"status": "Mosaic Agent API Running"})
+
+@app.route('/api/health')
+def health():
+    return jsonify({"status": "healthy", "service": "mosaic-agent"})
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    data = request.json
+    message = data.get('message', '')
+    
+    # Proxy vers Ollama
+    ollama_response = requests.post(
+        'http://localhost:11434/api/generate',
+        json={
+            'model': 'tinyllama:1.1b',
+            'prompt': message,
+            'stream': False
+        }
+    )
+    
+    if ollama_response.status_code == 200:
+        return jsonify(ollama_response.json())
+    return jsonify({"error": "Ollama error"}), 500
+
+if __name__ == '__main__':
+    print("🌐 Flask server starting on http://localhost:5000")
+    app.run(debug=True, host='0.0.0.0', port=5000)
+EOF
+fi
+
+# Nettoyer avant de démarrer
+cleanup
+
+# Démarrer Flask
+echo "🌐 Lancement du backend Flask..."
+python app.py > /tmp/flask.log 2>&1 &
+FLASK_PID=$!
+
+# Attendre que Flask démarre
+echo "⏳ Attente du démarrage de Flask..."
+for i in {1..10}; do
+    if curl -s http://localhost:$FLASK_PORT/api/health > /dev/null; then
+        echo "✅ Flask démarré avec succès"
+        break
+    fi
+    sleep 1
+done
+
+# Créer index.html minimal si absent
+if [ ! -f "index.html" ]; then
+    echo "📝 Création d'un index.html minimal..."
+    cat > index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mosaic Agent</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #1a1a2e; color: white; }
+        .container { max-width: 800px; margin: auto; }
+        #chat { border: 1px solid #444; padding: 10px; height: 400px; overflow-y: auto; background: #16213e; }
+        input { width: 70%; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; background: #0f3460; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Mosaic Agent</h1>
+        <div id="chat"></div>
+        <input type="text" id="message" placeholder="Tapez votre message...">
+        <button onclick="sendMessage()">Envoyer</button>
+    </div>
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById('message');
+            const chatDiv = document.getElementById('chat');
+            const message = input.value;
+            
+            chatDiv.innerHTML += `<p><b>Vous:</b> ${message}</p>`;
+            input.value = '';
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: message})
+                });
+                const data = await response.json();
+                chatDiv.innerHTML += `<p><b>Agent:</b> ${data.response || 'Réponse reçue'}</p>`;
+            } catch (error) {
+                chatDiv.innerHTML += `<p><b>Erreur:</b> ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
+EOF
+fi
+
+# Ouvrir l'interface
+echo "🎯 Ouverture de l'interface web..."
+open index.html 2>/dev/null || xdg-open index.html 2>/dev/null || echo "Ouvrez http://localhost:$FLASK_PORT"
+
+# Afficher le statut
+echo ""
+echo "✅ Mosaic Agent opérationnel !"
+echo "📍 Interface web : http://localhost:$FLASK_PORT"
+echo "🦙 Ollama API : http://localhost:$OLLAMA_PORT"
+echo ""
+echo "📊 Processus actifs :"
+ps aux | grep -E "python app.py|ollama" | grep -v grep
+
+# Afficher les logs en temps réel
+echo ""
+echo "📜 Logs Flask :"
+tail -f /tmp/flask.log

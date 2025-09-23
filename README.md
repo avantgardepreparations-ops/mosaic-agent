@@ -218,6 +218,59 @@ npm install
 npm run test-agents
 ```
 
+## 🏁 Chaîne Multi‑Agents & Agent Final
+
+### Pipeline Multi-Agents (Étapes 1→9)
+1. Prompt initial utilisateur  
+2. Affinement 1  
+3. Générations parallèles  
+4. Récolte  
+5. Vérification faisabilité  
+6. Affinement 2  
+7. Assemblage  
+8. Innovation  
+9. **Vérification Finale (Agent Final)** ✅
+
+### Agent Final
+Produit un rapport consolidé: métriques d'amélioration, état de structure, extrait de code final, prochaines étapes.
+
+**Endpoint de test:**
+```bash
+curl http://localhost:5000/api/agent/final/test | jq
+```
+
+**Exemple de réponse:**
+```json
+{
+  "run_id": "...",
+  "stage": "FINAL_REPORT",
+  "report": {
+    "summary": "Succès",
+    "variant_count": 2,
+    "improvement_ratio": 0.29
+  }
+}
+```
+
+### Fichiers ajoutés
+- `agents/agent_final.py` - Classe FinalAgent principale
+- `docs/agent-final-analysis.md` - Analyse fonctionnelle & technique
+- `docs/screenshots/agent-final-overview.png` - Vue d'ensemble
+- `tests/test_agent_final.py` - Tests unitaires
+
+### Screenshot
+![Agent Final Overview](docs/screenshots/agent-final-overview.png)
+
+### TODO (Futurs)
+- Sandbox Docker (exécution isolée)
+- Orchestrateur (Temporal / Celery / BullMQ)
+- Benchmarks automatiques
+- Diff AST + signature rapport
+- Couverture tests >85%
+
+### EN (Short Placeholder)
+Final Agent consolidates multi-agent pipeline outputs into a delivery report (validation + metrics). Future work: sandbox, orchestration, benchmarks.
+
 ## 🔍 Dépannage
 
 ### Problèmes Courants

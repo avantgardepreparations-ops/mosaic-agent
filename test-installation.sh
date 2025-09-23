@@ -148,6 +148,13 @@ else
     print_test_result "System Info API" "FAIL" "Endpoint not responding"
 fi
 
+# Test Final Agent endpoint
+if curl -s http://localhost:5000/api/agent/final/test | grep -q "FINAL_REPORT"; then
+    print_test_result "Final Agent API" "PASS" "Endpoint responding with valid report"
+else
+    print_test_result "Final Agent API" "FAIL" "Endpoint not responding or invalid response"
+fi
+
 # Stop backend
 kill $BACKEND_PID 2>/dev/null
 wait $BACKEND_PID 2>/dev/null

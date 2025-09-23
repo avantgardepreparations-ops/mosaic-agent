@@ -416,6 +416,23 @@ def get_install_guide():
     
     return jsonify(guide)
 
+@app.route('/api/agent/final/test', methods=['GET'])
+def agent_final_test():
+    """Test endpoint for Final Agent"""
+    try:
+        from agents.agent_final import FinalAgent, simulate_final_agent_payload
+        agent = FinalAgent()
+        payload = simulate_final_agent_payload()
+        result = agent.run(payload)
+        return result, 200
+    except Exception as e:
+        return jsonify({
+            "error": {
+                "code": "AGENT_ERROR",
+                "details": [f"Failed to run Final Agent: {str(e)}"]
+            }
+        }), 500
+
 def cleanup_processes():
     """Cleanup background processes on shutdown"""
     for tool_name, status in tool_status.items():

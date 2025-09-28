@@ -1,0 +1,22 @@
+{
+  "name": "mosaic-agents",
+  "version": "1.0.0",
+  "description": "JavaScript-based agent system for Mosaic Agent",
+  "main": "orchestrator/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node orchestrator/index.js",
+    "test": "node test/test-agents.js"
+  },
+  "keywords": [
+    "agents",
+    "ai",
+    "orchestration",
+    "mosaic"
+  ],
+  "author": "Mosaic Agent Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

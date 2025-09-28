@@ -4,7 +4,7 @@ Mosaic Agent - Backend API for AI Coding Tools Management
 Centralizes management of various open source AI tools.
 """
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import subprocess
 import requests
@@ -183,6 +183,12 @@ def stop_chromadb():
         return True, "ChromaDB stopped successfully"
     except Exception as e:
         return False, f"Failed to stop ChromaDB: {str(e)}"
+
+# Root route - Open in visualizer
+@app.route('/')
+def open_visualizer():
+    """Serve the infrastructure visualizer interface"""
+    return send_from_directory('frontend', 'demo.html')
 
 # API Routes
 
